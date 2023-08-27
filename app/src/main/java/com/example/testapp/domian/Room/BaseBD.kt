@@ -2,7 +2,6 @@ package com.example.testapp.domian.Room
 
 import androidx.room.*
 import com.example.testapp.data.Room.*
-import com.example.testapp.domian.NetWork.DataClass.*
 import com.example.testapp.domian.Room.DataClass.*
 import com.example.testapp.domian.Room.DataClass.Films.*
 import com.example.testapp.domian.Room.DataClass.Peoples.*
