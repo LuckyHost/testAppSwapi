@@ -4,6 +4,7 @@ import android.app.*
 import android.content.*
 import com.example.testapp.data.*
 import com.example.testapp.data.NetWork.*
+import com.example.testapp.data.Room.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,8 +19,8 @@ object ModuleRepository {
 
     @Singleton
     @Provides
-    fun providerrep(apiService: ApiService):Repository{
-        return  Repository(apiService, )
+    fun providerrep(apiService: ApiService,daoPeople: DaoPeople,daoPlanet: DaoPlanet,daoStartShip: DaoStartShip,daoFilm: DaoFilm):Repository{
+        return  Repository(apiService,daoPeople,daoPlanet,daoStartShip,daoFilm )
     }
 
 

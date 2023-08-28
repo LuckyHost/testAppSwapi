@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import java.util.concurrent.*
 
 @Dao
-interface DaoStartShip {
+interface DaoStartShip:DaoMy {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertStartships( people: List<ResultStarShip>)

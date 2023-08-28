@@ -6,7 +6,7 @@ import com.example.testapp.domian.Room.DataClass.Films.*
 import kotlinx.coroutines.flow.*
 
 @Dao
-interface DaoFilm {
+interface DaoFilm:DaoMy {
  //
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertFilm( people: List<ResultFilm>)

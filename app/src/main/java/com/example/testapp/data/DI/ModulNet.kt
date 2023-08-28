@@ -2,6 +2,8 @@ package com.example.testapp.data.DI
 
 import com.example.testapp.data.NetWork.*
 import com.example.testapp.data.NetWork.Constante.BASE_URL
+import com.skydoves.sandwich.*
+import com.skydoves.sandwich.adapters.*
 import dagger.*
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -23,6 +25,7 @@ object ModulNet {
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .build()
     }
 

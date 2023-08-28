@@ -135,15 +135,7 @@ class ViewModel @Inject constructor(
 
     val gelLoadAllData =
         viewModelScope.launch(Dispatchers.Default) {
-
-            repository.getDataAllPeopleNet().collect {
-                Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PeopleNet")
-                launch {
-                    daoPeople.insertPeople(it.results)
-                }.join()
-            }
-
-
+            launch { repository.getDataAllPeopleNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PeopleNet") }.join()
 
             repository.getDataAllPlanetNet().collect {
                 Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PlanetNet")

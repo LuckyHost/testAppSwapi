@@ -45,7 +45,6 @@ fun Splash(navController: NavController, myViewModel: ViewModel) {
 
                 if (isLoad.value) {
                     Log.d("MyLog", "Splash.kt. Splash: ${myViewModel.isLoadFile.value}")
-                    delay(1000)
                     navController.popBackStack()
                     navController.navigate("Home")
                 }

@@ -4,33 +4,32 @@ import android.content.*
 import android.util.*
 import android.widget.*
 import com.example.testapp.data.NetWork.*
+import com.example.testapp.data.Room.*
 import com.example.testapp.domian.Room.DataClass.Films.*
 import com.example.testapp.domian.Room.DataClass.Peoples.*
 import com.example.testapp.domian.Room.DataClass.Planets.*
 import com.example.testapp.domian.Room.DataClass.Starships.*
 import com.example.testapp.present.Screens.*
+import com.skydoves.sandwich.*
 import kotlinx.coroutines.flow.*
 import javax.inject.*
 
 
 class Repository @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val daoPeople: DaoPeople,
+    private val daoPlanet: DaoPlanet,
+    private val daoStartShip: DaoStartShip,
+    private val daoFilm: DaoFilm,
 ) {
 
-////
-    fun getDataAllPeopleNet(): Flow<AllPeoples> = flow {
-        try {
-            val resonse = apiService.getDataAllPeople()
-            if (resonse.isSuccessful) {
-                emit(resonse.body()!!)
-            }
-        } catch (e: Throwable) {
-            Log.d("MyLog", "Repository.kt. getDataAllPeopleNet: $e")
- //
+
+    suspend fun getDataAllPeopleNet() {
+        var result = emptyList<ResultPeople>()
+        val resonse = apiService.getDataAllPeople()
+        resonse.suspendOnSuccess { daoPeople.insertPeople(data.results)  }
+            .suspendOnException { Log.d("MyLog", "Repository.kt. getDataAllPeopleNet: $message") }
         }
-
-
-    }
 
     fun getDataAllPlanetNet(): Flow<AllPlanets> = flow {
         try {

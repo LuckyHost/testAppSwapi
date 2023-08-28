@@ -12,7 +12,7 @@ interface ApiService {
 
 
     @GET("people")
-    suspend fun getDataAllPeople():Response<AllPeoples>
+    suspend fun getDataAllPeople():ApiResponse<AllPeoples>
 
     @GET("planets")
     suspend fun getDataPlanet():Response<AllPlanets>
