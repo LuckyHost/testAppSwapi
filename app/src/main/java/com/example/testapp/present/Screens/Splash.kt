@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
+import androidx.lifecycle.viewmodel.compose.*
 import androidx.navigation.*
 import com.example.testapp.present.*
 import com.example.testapp.present.theme.*
@@ -15,6 +16,7 @@ import kotlinx.coroutines.*
 
 @Composable
 fun Splash(navController: NavController, myViewModel: ViewModel) {
+    var isLoad = myViewModel.isLoadFile.collectAsState()
 
 
     Column(
@@ -39,18 +41,14 @@ fun Splash(navController: NavController, myViewModel: ViewModel) {
             color = PurpleGrey40,
         )
 
-        LaunchedEffect(true) {
+        LaunchedEffect(isLoad.value) {
 
-            myViewModel.isLoadFile.collect {
-                if (it) {
-                    Log.d("MyLog", "Splash.kt. Splash: $it")
+                if (isLoad.value) {
+                    Log.d("MyLog", "Splash.kt. Splash: ${myViewModel.isLoadFile.value}")
                     delay(1000)
                     navController.popBackStack()
                     navController.navigate("Home")
                 }
-            }
-
-
         }
 
     }

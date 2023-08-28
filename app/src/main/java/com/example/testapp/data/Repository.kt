@@ -17,7 +17,7 @@ class Repository @Inject constructor(
     private val apiService: ApiService
 ) {
 
-
+////
     fun getDataAllPeopleNet(): Flow<AllPeoples> = flow {
         try {
             val resonse = apiService.getDataAllPeople()
