@@ -11,13 +11,13 @@ import java.util.concurrent.*
 interface DaoPlanet:DaoMy {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertPlanet( people: List<ResultPlanet>?)
+    fun insert(people: List<ResultPlanet>?)
     @Query("SELECT * FROM Planet")
-    fun getAllPlanet(): Flow <List<ResultPlanet>?>
+    fun getAll(): Flow <List<ResultPlanet>?>
     @Update
     suspend fun updateFaforitePlanet(person: ResultPlanet)
     @Query("SELECT * FROM Planet WHERE name = :id")
-    suspend fun getplanetById(id: String): ResultPlanet?
+    suspend fun getById(id: String): ResultPlanet?
 
     @Query("SELECT * FROM Planet WHERE isFavorites = 1")
     fun getFavoritePeople(): Flow <List<ResultPlanet>>

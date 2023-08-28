@@ -15,10 +15,10 @@ interface ApiService {
     suspend fun getDataAllPeople():ApiResponse<AllPeoples>
 
     @GET("planets")
-    suspend fun getDataPlanet():Response<AllPlanets>
+    suspend fun getDataPlanet():ApiResponse<AllPlanets>
 
     @GET("starships")
-    suspend fun getDataStartship():Response<AllStarships>
+    suspend fun getDataStartship():ApiResponse<AllStarships>
     @GET("films")
-    suspend fun getDataFilm():Response<AllFilms>
+    suspend fun getDataFilm():ApiResponse<AllFilms>
 }

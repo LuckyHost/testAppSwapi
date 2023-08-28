@@ -51,7 +51,7 @@ class ViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
 
             async {
-                daoPeople.getAllPeople()
+                daoPeople.getAll()
                     .map {
                         it.filter {
                             it.name.lowercase().startsWith(searchTextDb.value.lowercase())
@@ -65,7 +65,7 @@ class ViewModel @Inject constructor(
             }
 
             async {
-                daoPlanet.getAllPlanet().map {
+                daoPlanet.getAll().map {
                     it?.filter {
                         it.name.lowercase().startsWith(searchTextDb.value.lowercase())
                     }
@@ -78,7 +78,7 @@ class ViewModel @Inject constructor(
             }
 
             async {
-                daoStartShip.getAllStartships()?.map {
+                daoStartShip.getAll()?.map {
                     it.filter {
                         it.name.lowercase().startsWith(searchTextDb.value.lowercase())
                     }
@@ -92,7 +92,7 @@ class ViewModel @Inject constructor(
             }
 
             async {
-                daoFilm.getAllFilm().collect {
+                daoFilm.getAll().collect {
                     Log.d("MyLog", "ViewModel.kt.  Size: ${it.size}")
                     _listFilm.value = it;Log.d("MyLog", "ViewModel.kt. : Room Collect StartShip")
                 }
@@ -105,7 +105,7 @@ class ViewModel @Inject constructor(
     fun updateFavoritePeople(resultPeople: ResultPeople) {
 
         viewModelScope.async {
-            val idPerson = daoPeople.getPersonById(resultPeople.name)
+            val idPerson = daoPeople.getById(resultPeople.name)
             idPerson!!.isFavorites = !idPerson.isFavorites
             daoPeople.updateForFavorite(idPerson)
             Log.d("MyLog", "Функция Update Favorite Выполнена")
@@ -115,7 +115,7 @@ class ViewModel @Inject constructor(
     fun updateFavoriteStarShipe(resultStarShipRoom: ResultStarShip) {
 
         viewModelScope.launch {
-            val idPerson = daoStartShip.getStarShipById(resultStarShipRoom.name)
+            val idPerson = daoStartShip.getById(resultStarShipRoom.name)
             idPerson!!.isFavorites = !idPerson.isFavorites
             daoStartShip.updateFaforiteStartships(idPerson)
             Log.d("MyLog", "Функция Update Favorite Выполнена")
@@ -125,7 +125,7 @@ class ViewModel @Inject constructor(
     fun updateFavoritePlanet(resultPlanetRoom: ResultPlanet) {
 
         viewModelScope.launch {
-            val idPerson = daoPlanet.getplanetById(resultPlanetRoom.name)
+            val idPerson = daoPlanet.getById(resultPlanetRoom.name)
             idPerson!!.isFavorites = !idPerson.isFavorites
             daoPlanet.updateFaforitePlanet(idPerson)
             Log.d("MyLog", "Функция Update Favorite Выполнена")
@@ -140,14 +140,14 @@ class ViewModel @Inject constructor(
             repository.getDataAllPlanetNet().collect {
                 Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PlanetNet")
                 launch {
-                    daoPlanet.insertPlanet(it.results)
+                    daoPlanet.insert(it.results)
                 }
             }
 
             repository.getDataAllStartShipnNet().collect {
                 Log.d("MyLog", "ViewModel.kt. gelLoadAllData: startShipNet")
                 launch {
-                    daoStartShip.insertStartships(it.results)
+                    daoStartShip.insert(it.results)
                 }
 
 
@@ -155,7 +155,7 @@ class ViewModel @Inject constructor(
                 repository.getDataAllFilm().collect {
                     Log.d("MyLog", "ViewModel.kt. gelLoadAllData: FilmNet")
                     async(Dispatchers.IO) {
-                        daoFilm.insertFilm(it.results)
+                        daoFilm.insert(it.results)
                     }
                 }
 
@@ -183,7 +183,7 @@ class ViewModel @Inject constructor(
 
             async {
                 resultPeople.films.map {
-                    var filmData = daoFilm.getFilmById(it)
+                    var filmData = daoFilm.getById(it)
                     resul = resul + (filmData!!.title) + (": " + filmData.producer + " ") + ("\n")
                 }
             }.await()

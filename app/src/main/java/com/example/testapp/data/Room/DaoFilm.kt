@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.*
 interface DaoFilm:DaoMy {
  //
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertFilm( people: List<ResultFilm>)
+    fun insert(people: List<ResultFilm>)
     //    @Query("SELECT * FROM people WHERE name LIKE (:personName) || '%'  ")
     @Query("SELECT * FROM Film ")
-    fun getAllFilm(): Flow<List<ResultFilm>>
+    fun getAll(): Flow<List<ResultFilm>>
 
     @Query("SELECT * FROM Film WHERE url = :filmId")
-    suspend fun getFilmById(filmId: String): ResultFilm?
+    suspend fun getById(filmId: String): ResultFilm?
 
 }

@@ -11,14 +11,14 @@ import java.util.concurrent.*
 interface DaoPeople:DaoMy {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertPeople( people: List<ResultPeople>)
+    fun insert(people: List<ResultPeople>)
 //    @Query("SELECT * FROM people WHERE name LIKE (:personName) || '%'  ")
     @Query("SELECT * FROM people ")
-     fun getAllPeople(): Flow <List<ResultPeople>>
+     fun getAll(): Flow <List<ResultPeople>>
     @Update
     suspend fun updateForFavorite(person: ResultPeople)
     @Query("SELECT * FROM people WHERE name = :personName")
-    suspend fun getPersonById(personName: String): ResultPeople?
+    suspend fun getById(personName: String): ResultPeople?
 
 
 

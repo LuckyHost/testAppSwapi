@@ -11,9 +11,9 @@ import java.util.concurrent.*
 interface DaoStartShip:DaoMy {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertStartships( people: List<ResultStarShip>)
+    fun insert(people: List<ResultStarShip>)
     @Query("SELECT * FROM Startship")
-    fun getAllStartships(): Flow <List<ResultStarShip>>?
+    fun getAll(): Flow <List<ResultStarShip>>?
     @Update
     suspend fun updateFaforiteStartships(person: ResultStarShip)
 
@@ -22,7 +22,7 @@ interface DaoStartShip:DaoMy {
     fun getFavoritePeople(): Flow <List<ResultStarShip>>
 
     @Query("SELECT * FROM Startship WHERE name = :id")
-    suspend fun getStarShipById(id: String): ResultStarShip?
+    suspend fun getById(id: String): ResultStarShip?
 
 
 
