@@ -134,33 +134,12 @@ class ViewModel @Inject constructor(
 
 
     val gelLoadAllData =
-        viewModelScope.launch(Dispatchers.Default) {
-            launch { repository.getDataAllPeopleNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PeopleNet") }.join()
-
-            repository.getDataAllPlanetNet().collect {
-                Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PlanetNet")
-                launch {
-                    daoPlanet.insert(it.results)
-                }
-            }
-
-            repository.getDataAllStartShipnNet().collect {
-                Log.d("MyLog", "ViewModel.kt. gelLoadAllData: startShipNet")
-                launch {
-                    daoStartShip.insert(it.results)
-                }
-
-
-                //Бонусное Продюсер
-                repository.getDataAllFilm().collect {
-                    Log.d("MyLog", "ViewModel.kt. gelLoadAllData: FilmNet")
-                    async(Dispatchers.IO) {
-                        daoFilm.insert(it.results)
-                    }
-                }
-
-            }
-
+        viewModelScope.launch(Dispatchers.IO) {
+            launch { android.util.Log.d("MyLog","ViewModel.kt. 1: ");repository.getDataAllPeopleNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PeopleNet") }
+            launch {  android.util.Log.d("MyLog","ViewModel.kt. 2: ");repository.getDataAllPlanetNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PlanetNet") }
+            launch {  android.util.Log.d("MyLog","ViewModel.kt. 3: ");repository.getDataAllStartShipnNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: StartShipNet") }
+            launch { android.util.Log.d("MyLog","ViewModel.kt. 4: "); repository.getDataAllFilm(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: FilmNet") }
+                .join()
             reLists(searchTextDb.value)
             _isLoadFile.value = true
         }
