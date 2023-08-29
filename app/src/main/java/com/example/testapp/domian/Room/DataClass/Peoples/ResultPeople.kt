@@ -1,6 +1,7 @@
 package com.example.testapp.domian.Room.DataClass.Peoples
 
 import androidx.room.*
+import com.example.testapp.domian.Room.DataClass.*
 
 @Entity("People")
 data class ResultPeople(
@@ -15,11 +16,11 @@ data class ResultPeople(
     val homeworld: String,
     val mass: String,
     @PrimaryKey
-    val name: String,
+     val name: String,
     val skin_color: String,
     val species: List<String>,
     val starships: List<String>,
     val url: String,
     val vehicles: List<String>,
-    var isFavorites: Boolean = false,
+     var isFavorites: Boolean = false,
 )

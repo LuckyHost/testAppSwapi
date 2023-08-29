@@ -16,28 +16,42 @@ class Repository @Inject constructor(
 ) {
 
 
-    suspend fun getDataAllPeopleNet() {
-        apiService.getDataAllPeople()
-            .suspendOnSuccess { daoPeople.insert(data.results) }
+    suspend fun <T> loadData(
+        callApi: suspend () -> ApiResponse<T>,
+        daoInsert: suspend (T) -> Unit,
+    )
+    {
+        callApi()
+            .suspendOnSuccess { daoInsert(data) }
             .suspendOnException { Log.d("MyLog", "Repository.kt. getDataAllPeople: $message") }
     }
 
+    suspend fun getDataAllPeopleNet() {
+        loadData(
+            callApi = { apiService.getDataAllPeople() },
+            daoInsert = { daoPeople.insert(it.results) }
+        )
+ }
+
     suspend fun getDataAllPlanetNet() {
-        apiService.getDataPlanet()
-            .suspendOnSuccess { daoPlanet.insert(data.results) }
-            .suspendOnException { Log.d("MyLog", "Repository.kt. getDataAllPlanet: $message") }
+        loadData(
+            callApi = { apiService.getDataPlanet() },
+            daoInsert = { daoPlanet.insert(it.results) }
+        )
     }
 
     suspend fun getDataAllStartShipNet() {
-        apiService.getDataStartship()
-            .suspendOnSuccess { daoStartShip.insert(data.results) }
-            .suspendOnException { Log.d("MyLog", "Repository.kt. getDataAllStartShip: $message") }
-    }
+        loadData(
+            callApi = { apiService.getDataStartship() },
+            daoInsert = { daoStartShip.insert(it.results) }
+        )
+       }
 
     suspend fun getDataAllFilm() {
-        apiService.getDataFilm()
-            .suspendOnSuccess { daoFilm.insert(data.results) }
-            .suspendOnException { Log.d("MyLog", "Repository.kt. getDataAllFilm: $message") }
+        loadData(
+            callApi = { apiService.getDataFilm() },
+            daoInsert = { daoFilm.insert(it.results) }
+        )
     }
 
 }
