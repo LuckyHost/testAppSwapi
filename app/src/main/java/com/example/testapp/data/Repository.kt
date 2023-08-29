@@ -28,7 +28,7 @@ class Repository @Inject constructor(
             .suspendOnException { Log.d("MyLog", "Repository.kt. getDataAllPlanet: $message") }
     }
 
-    suspend fun getDataAllStartShipnNet() {
+    suspend fun getDataAllStartShipNet() {
         apiService.getDataStartship()
             .suspendOnSuccess { daoStartShip.insert(data.results) }
             .suspendOnException { Log.d("MyLog", "Repository.kt. getDataAllStartShip: $message") }

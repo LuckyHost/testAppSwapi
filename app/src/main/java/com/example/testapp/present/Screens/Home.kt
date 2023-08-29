@@ -36,7 +36,7 @@ fun Home(viewModel: ViewModel, navController: NavController) {
     val listItemsPeopleLazy = viewModel.listpeople.collectAsState()
     val listItemStarShipeLazy = viewModel.listStartShip.collectAsState()
     val listItemPlaneteLazy = viewModel.listPlanet.collectAsState()
-    val searchListString = viewModel.newListSearch.collectAsState(emptyList())
+    val searchListString = viewModel.listSearch.collectAsState(emptyList())
     var reSearchListString = searchListString
 //    var
     var searchText by remember { mutableStateOf("") }
@@ -196,13 +196,14 @@ fun Home(viewModel: ViewModel, navController: NavController) {
                                 text?.let {
 
                                         Text(text = it,
-                                            modifier = Modifier.clickable {
-                                                searchText = it
-                                                isActive = false
-                                                actLazy(searchText)
-                                                viewModel.reLists(searchText)
-                                                Log.d("MyLog", "Home.kt. Home:  $it")
-                                            }
+                                            modifier = Modifier
+                                                .clickable {
+                                                    searchText = it
+                                                    isActive = false
+                                                    actLazy(searchText)
+                                                    viewModel.reLists(searchText)
+                                                    Log.d("MyLog", "Home.kt. Home:  $it")
+                                                }
                                                 .padding(5.dp)
                                                 .fillMaxWidth()
                                         )
@@ -211,37 +212,19 @@ fun Home(viewModel: ViewModel, navController: NavController) {
                         }
                     /*}*/
                 }
-
-
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    when (isActLazyStarShip) {
-
-                        actLazyPeople -> {
-                            if (listItemsPeopleLazy.value != null) {
-                                items(listItemsPeopleLazy.value ?: emptyList()) {
-                                    ItemPerson(it, viewModel)
-                                }
-                            }
-                        }
-
-                        actLazyPlanet -> {
-                            items(listItemPlaneteLazy.value ?: emptyList()) {
-                                ItemPlanet(it, viewModel)
-                            }
-                        }
-
-                        actLazyStartShip -> {
-                            items(listItemStarShipeLazy.value ?: emptyList()) {
-                                ItemStarship(it, viewModel)
-                            }
-                        }
-
+                    items(listItemsPeopleLazy.value ?: emptyList()) {
+                        ItemPerson(it, viewModel)
+                    }
+                    items(listItemPlaneteLazy.value ?: emptyList()) {
+                        ItemPlanet(it, viewModel)
+                    }
+                    items(listItemStarShipeLazy.value ?: emptyList()) {
+                        ItemStarship(it, viewModel)
                     }
                 }
-
-
             }
         }
 

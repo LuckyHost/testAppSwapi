@@ -16,9 +16,6 @@ class MainActivity : ComponentActivity() {
 
         viewModel.gelLoadAllData
 
-
-
-
         setContent {
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "Splash") {

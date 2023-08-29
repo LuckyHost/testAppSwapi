@@ -135,19 +135,18 @@ class ViewModel @Inject constructor(
 
     val gelLoadAllData =
         viewModelScope.launch(Dispatchers.IO) {
-            launch { android.util.Log.d("MyLog","ViewModel.kt. 1: ");repository.getDataAllPeopleNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PeopleNet") }
-            launch {  android.util.Log.d("MyLog","ViewModel.kt. 2: ");repository.getDataAllPlanetNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PlanetNet") }
-            launch {  android.util.Log.d("MyLog","ViewModel.kt. 3: ");repository.getDataAllStartShipnNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: StartShipNet") }
-            launch { android.util.Log.d("MyLog","ViewModel.kt. 4: "); repository.getDataAllFilm(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: FilmNet") }
+            launch { repository.getDataAllPeopleNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PeopleNet") }
+            launch { repository.getDataAllPlanetNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PlanetNet") }
+            launch { repository.getDataAllStartShipNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: StartShipNet") }
+            launch { repository.getDataAllFilm(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: FilmNet") }
                 .join()
-            reLists(searchTextDb.value)
             _isLoadFile.value = true
+            reLists(searchTextDb.value)
         }
 
 
-    val newListSearch: Flow<List<String?>> = flow {
-        val result = mutableListOf("")
-
+    val listSearch: Flow<List<String?>> = flow {
+        val result:MutableList<String> =  mutableListOf()
         listpeople.value?.forEach { result.add(it.name) }
         listPlanet.value?.forEach { result.add(it.name) }
         listStartShip.value?.forEach { result.add(it.name) }
