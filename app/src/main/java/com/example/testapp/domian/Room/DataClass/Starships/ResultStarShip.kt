@@ -1,6 +1,8 @@
 package com.example.testapp.domian.Room.DataClass.Starships
 
 import androidx.room.*
+import com.example.testapp.domian.Room.DataClass.*
+
 @Entity("Startship")
 data class ResultStarShip(
     val MGLT: String,
@@ -17,10 +19,10 @@ data class ResultStarShip(
     val max_atmosphering_speed: String,
     val model: String,
     @PrimaryKey
-    val name: String,
+    override val name: String,
     val passengers: String,
     val pilots: List<String>,
     val starship_class: String,
     val url: String,
-    var isFavorites: Boolean = false,
-)
+    override var isFavorites: Boolean = false,
+): Favorite

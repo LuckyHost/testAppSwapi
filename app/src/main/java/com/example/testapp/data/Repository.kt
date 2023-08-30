@@ -3,6 +3,7 @@ package com.example.testapp.data
 import android.util.*
 import com.example.testapp.data.NetWork.*
 import com.example.testapp.data.Room.*
+import com.example.testapp.domian.Room.DataClass.Peoples.*
 import com.skydoves.sandwich.*
 import javax.inject.*
 
@@ -23,23 +24,10 @@ class Repository @Inject constructor(
         return callApi()
             .suspendOnSuccess { daoInsert(data) }
             .suspendOnException { Log.d("MyLog", "Repository.kt. loadData Exception: $message") }
-
-
     }
 
-    private fun <T> ApiResponse<T>.code(): StatusCode? {
-        val statusCode = when (this) {
-            is ApiResponse.Success -> this.statusCode
-            is ApiResponse.Failure.Error -> this.statusCode
-            is ApiResponse.Failure -> null
-        }
-        Log.d("MyLog", "Repository.kt. code: $statusCode")
-        return statusCode
-    }
-
-
-    suspend fun getDataAllPeopleNet() {
-        loadData(
+    suspend fun getDataAllPeopleNet():ApiResponse<AllPeoples> {
+       return loadData(
             callApi = { apiService.getDataAllPeople() },
             daoInsert = { daoPeople.insert(it.results) }
         )
@@ -63,7 +51,7 @@ class Repository @Inject constructor(
         loadData(
             callApi = { apiService.getDataFilm() },
             daoInsert = { daoFilm.insert(it.results) }
-        ).code()
+        )
     }
 
 }

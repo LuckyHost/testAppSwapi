@@ -1,7 +1,6 @@
 package com.example.testapp.domian.Room.DataClass
 
-  open class Favorite(
-    open val name: String,
-    open var isFavorites: Boolean = false,
-
-    )
+interface Favorite {
+  val name:String
+  var isFavorites: Boolean
+}

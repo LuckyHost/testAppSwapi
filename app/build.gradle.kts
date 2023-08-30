@@ -98,6 +98,7 @@ dependencies {
 
     //Nav
     implementation ("androidx.navigation:navigation-compose:2.6.0")
+    implementation(kotlin("reflect"))
 
 
 }

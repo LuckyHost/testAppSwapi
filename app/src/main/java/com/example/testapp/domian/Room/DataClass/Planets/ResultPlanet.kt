@@ -1,6 +1,7 @@
 package com.example.testapp.domian.Room.DataClass.Planets
 
 import androidx.room.*
+import com.example.testapp.domian.Room.DataClass.*
 
 @Entity("Planet")
 data class ResultPlanet(
@@ -12,7 +13,7 @@ data class ResultPlanet(
     val films: List<String>,
     val gravity: String,
     @PrimaryKey
-    val name: String,
+    override val name: String,
     val orbital_period: String,
     val population: String,
     val residents: List<String>,
@@ -20,5 +21,5 @@ data class ResultPlanet(
     val surface_water: String,
     val terrain: String,
     val url: String,
-    var isFavorites: Boolean = false,
-)
+    override var isFavorites: Boolean = false,
+):Favorite

@@ -16,11 +16,11 @@ data class ResultPeople(
     val homeworld: String,
     val mass: String,
     @PrimaryKey
-     val name: String,
+    override val name: String,
     val skin_color: String,
     val species: List<String>,
     val starships: List<String>,
     val url: String,
     val vehicles: List<String>,
-     var isFavorites: Boolean = false,
-)
+    override var isFavorites: Boolean = false,
+) : Favorite

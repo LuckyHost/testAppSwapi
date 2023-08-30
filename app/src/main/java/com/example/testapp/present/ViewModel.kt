@@ -5,10 +5,12 @@ import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
 import com.example.testapp.data.*
 import com.example.testapp.data.Room.*
+import com.example.testapp.domian.Room.DataClass.*
 import com.example.testapp.domian.Room.DataClass.Films.*
 import com.example.testapp.domian.Room.DataClass.Peoples.*
 import com.example.testapp.domian.Room.DataClass.Planets.*
 import com.example.testapp.domian.Room.DataClass.Starships.*
+import com.skydoves.sandwich.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -101,64 +103,57 @@ class ViewModel @Inject constructor(
         }
     }
 
-    private suspend fun <T> test3 (
-        getId: suspend ()->T?,
-        updateFavorite:(T?)-> Unit
-    )
-    {
-     updateFavorite(getId())
-
-    }
     fun updateFavoritePeople(resultPeople: ResultPeople) {
-
-        viewModelScope.async {
-//
-//            test3(
-//                getId = {daoPeople.getById(resultPeople.name)},
-//                updateFavorite = {it?.isFavorites=!it?.isFavorites!! }
-//            )
-
-            val idPerson = daoPeople.getById(resultPeople.name)
-            idPerson?.isFavorites = !idPerson!!.isFavorites
-            daoPeople.updateForFavorite(idPerson)
-            Log.d("MyLog", "Функция Update Favorite Выполнена")
+        viewModelScope.launch {
+            updateFavorite(
+                idName = { daoPeople.getById(resultPeople.name) },
+                daoUpdate = { daoPeople.updateForFavorite(it) }
+            )
         }
     }
 
     fun updateFavoriteStarShipe(resultStarShipRoom: ResultStarShip) {
-
         viewModelScope.launch {
-            val idPerson = daoStartShip.getById(resultStarShipRoom.name)
-            idPerson!!.isFavorites = !idPerson.isFavorites
-            daoStartShip.updateFaforiteStartships(idPerson)
-            Log.d("MyLog", "Функция Update Favorite Выполнена")
+            updateFavorite(
+                idName = { daoStartShip.getById(resultStarShipRoom.name)},
+                daoUpdate = { daoStartShip.updateFaforiteStartships(it) }
+            )
         }
     }
 
 
-
-
-
-
     fun updateFavoritePlanet(resultPlanet: ResultPlanet) {
-
         viewModelScope.launch {
-
-//            val idPerson = daoPlanet.getById(resultPlanet.name)
-//            idPerson!!.isFavorites = !idPerson.isFavorites
-//            daoPlanet.updateFaforitePlanet(idPerson)
-//            Log.d("MyLog", "Функция Update Favorite Выполнена")
+            updateFavorite(
+                idName = { daoPlanet.getById(resultPlanet.name)},
+                daoUpdate = { daoPlanet.updateFaforitePlanet(it)}
+            )
         }
     }
 
 
     val gelLoadAllData =
         viewModelScope.launch(Dispatchers.IO) {
-            launch { repository.getDataAllPeopleNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PeopleNet") }
-            launch { repository.getDataAllPlanetNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: PlanetNet") }
-            launch { repository.getDataAllStartShipNet(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: StartShipNet") }
-            launch { repository.getDataAllFilm(); Log.d("MyLog", "ViewModel.kt. gelLoadAllData: FilmNet") }
-                .join()
+            launch {
+                repository.getDataAllPeopleNet().code(); Log.d(
+                "MyLog", "ViewModel.kt. gelLoadAllData: PeopleNet"
+            )
+            }
+            launch {
+                repository.getDataAllPlanetNet(); Log.d(
+                "MyLog", "ViewModel.kt. gelLoadAllData: PlanetNet"
+            )
+            }
+            launch {
+                repository.getDataAllStartShipNet(); Log.d(
+                "MyLog", "ViewModel.kt. gelLoadAllData: StartShipNet"
+            )
+            }
+            launch {
+                repository.getDataAllFilm(); Log.d(
+                "MyLog", "ViewModel.kt. gelLoadAllData: FilmNet"
+            )
+            }.join()
             _isLoadFile.value = true
             reLists(searchTextDb.value)
         }
@@ -194,4 +189,23 @@ class ViewModel @Inject constructor(
     }
 
 
+    fun <T> ApiResponse<T>.code(): StatusCode? {
+        val statusCode = when (this) {
+            is ApiResponse.Success -> this.statusCode
+            is ApiResponse.Failure.Error -> this.statusCode
+            is ApiResponse.Failure -> null
+        }
+        Log.d("MyLog", "Repository.kt. code: $statusCode")
+        return statusCode
+    }
+
+    private suspend fun <T : Favorite> updateFavorite(
+        idName: suspend () -> T?,
+        daoUpdate: suspend (T) -> Unit,
+    ) {
+        Log.d("MyLog", "ViewModel.kt. updateFavorite: ${idName()?.name}")
+        val item = idName()
+        item?.isFavorites = !idName()!!.isFavorites
+        daoUpdate(item!!)
+    }
 }
