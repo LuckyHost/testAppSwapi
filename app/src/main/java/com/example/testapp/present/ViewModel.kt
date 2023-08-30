@@ -101,12 +101,25 @@ class ViewModel @Inject constructor(
         }
     }
 
+    private suspend fun <T> test3 (
+        getId: suspend ()->T?,
+        updateFavorite:(T?)-> Unit
+    )
+    {
+     updateFavorite(getId())
 
+    }
     fun updateFavoritePeople(resultPeople: ResultPeople) {
 
         viewModelScope.async {
+//
+//            test3(
+//                getId = {daoPeople.getById(resultPeople.name)},
+//                updateFavorite = {it?.isFavorites=!it?.isFavorites!! }
+//            )
+
             val idPerson = daoPeople.getById(resultPeople.name)
-            idPerson!!.isFavorites = !idPerson.isFavorites
+            idPerson?.isFavorites = !idPerson!!.isFavorites
             daoPeople.updateForFavorite(idPerson)
             Log.d("MyLog", "Функция Update Favorite Выполнена")
         }
@@ -122,13 +135,19 @@ class ViewModel @Inject constructor(
         }
     }
 
-    fun updateFavoritePlanet(resultPlanetRoom: ResultPlanet) {
+
+
+
+
+
+    fun updateFavoritePlanet(resultPlanet: ResultPlanet) {
 
         viewModelScope.launch {
-            val idPerson = daoPlanet.getById(resultPlanetRoom.name)
-            idPerson!!.isFavorites = !idPerson.isFavorites
-            daoPlanet.updateFaforitePlanet(idPerson)
-            Log.d("MyLog", "Функция Update Favorite Выполнена")
+
+//            val idPerson = daoPlanet.getById(resultPlanet.name)
+//            idPerson!!.isFavorites = !idPerson.isFavorites
+//            daoPlanet.updateFaforitePlanet(idPerson)
+//            Log.d("MyLog", "Функция Update Favorite Выполнена")
         }
     }
 

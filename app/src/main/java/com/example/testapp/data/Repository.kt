@@ -16,22 +16,34 @@ class Repository @Inject constructor(
 ) {
 
 
-    suspend fun <T> loadData(
+    private suspend fun <T> loadData(
         callApi: suspend () -> ApiResponse<T>,
         daoInsert: suspend (T) -> Unit,
-    )
-    {
-        callApi()
+    ): ApiResponse<T> {
+        return callApi()
             .suspendOnSuccess { daoInsert(data) }
-            .suspendOnException { Log.d("MyLog", "Repository.kt. getDataAllPeople: $message") }
+            .suspendOnException { Log.d("MyLog", "Repository.kt. loadData Exception: $message") }
+
+
     }
+
+    private fun <T> ApiResponse<T>.code(): StatusCode? {
+        val statusCode = when (this) {
+            is ApiResponse.Success -> this.statusCode
+            is ApiResponse.Failure.Error -> this.statusCode
+            is ApiResponse.Failure -> null
+        }
+        Log.d("MyLog", "Repository.kt. code: $statusCode")
+        return statusCode
+    }
+
 
     suspend fun getDataAllPeopleNet() {
         loadData(
             callApi = { apiService.getDataAllPeople() },
             daoInsert = { daoPeople.insert(it.results) }
         )
- }
+    }
 
     suspend fun getDataAllPlanetNet() {
         loadData(
@@ -51,7 +63,7 @@ class Repository @Inject constructor(
         loadData(
             callApi = { apiService.getDataFilm() },
             daoInsert = { daoFilm.insert(it.results) }
-        )
+        ).code()
     }
 
 }

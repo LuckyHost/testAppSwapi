@@ -16,7 +16,7 @@ interface DaoPeople:DaoMy {
     @Query("SELECT * FROM people ")
      fun getAll(): Flow <List<ResultPeople>>
     @Update
-    suspend fun updateForFavorite(person: ResultPeople)
+    suspend fun updateForFavorite(person: ResultPeople?)
     @Query("SELECT * FROM people WHERE name = :personName")
     suspend fun getById(personName: String): ResultPeople?
 
